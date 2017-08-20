@@ -1,0 +1,80 @@
+<div class="page-header">
+  <h1>Advanced Search</h1>
+</div>
+
+<br />
+
+<div class="navbar-form">
+    <div class="form-group">
+        <input class="form-control" type="text" placeholder="search by ..." name="searchByName" ng-model="searchByName"/>
+    </div>
+    <button type="text" class="btn btn-default">Name</button>
+</div>
+
+<div class="navbar-form">
+    <div class="form-group">
+        <input class="form-control" type="text" placeholder="search by ..." name="searchByEmail" ng-model="searchByEmail"/>
+    </div>
+    <button type="text" class="btn btn-default">Email</button>
+</div>
+
+<div class="navbar-form">
+    <div class="form-group">
+        <input class="form-control" type="text" placeholder="search by ..." name="searchByPermission" ng-model="searchByPermission"/>
+    </div>
+    <button type="text" class="btn btn-default">Permissions</button>
+</div>
+
+<div class="navbar-form">
+    <button class="btn btn-primary" type="button" ng-click="management.advancedSearch(searchByName, searchByEmail, searchByPermission);">Search Now</button>
+</div>
+
+<div class="navbar-form">
+    <div class="btn-group">
+        <button type="button" class="btn btn-danger">Sort by</button>
+        <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <span class="caret"></span>
+            <span class="sr-only">Toggle Dropdown</span>
+        </button>
+        <ul class="dropdown-menu">
+            <li><a href="#" ng-click="management.sortOrder('name');">Name</a></li>
+            <li><a href="#" ng-click="management.sortOrder('email');">Email</a></li>
+            <li><a href="#" ng-click="management.sortOrder('permission');">Permission</a></li>
+        </ul>
+    </div>
+</div>
+
+<div class="navbar-form">
+    <div ng-show="management.searchLimit === undefined">
+        <p><strong>Results:</strong>{{ (management.users | filter: advancedSearchFilter | limitTo: management.searchLimit).length }}</p>
+    </div>
+    <div ng-show="management.sort">
+        <p><strong>Sorted by:</strong>{{ management.sort }}</p>
+    </div>
+</div>
+
+<br />
+
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <strong>List of all Users</strong>
+    </div>
+    <table class="table">
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Permission</th>
+            <th>Action</th>
+        </tr>
+        <tr ng-repeat="person in management.users | filter: advancedSearchFilter | orderBy: management.sort | limitTo: management.searchLimit">
+            <td>{{ person.name }}</td>
+            <td>{{ person.email }}</td>
+            <td>{{ person.permission }}</td>
+            <td>
+                <a href="/edit/{{person._id}}"><button type="button" class="btn btn-primary" ng-show="management.editAccess">Edit</button></a>
+                <button ng-click="management.deleteUser(person.email);" type="button" class="btn btn-danger" ng-show="management.deleteAccess">Delete</button></a>
+                <!-- <span><strong>Value of the email id being selected</strong>{{ person.email }}</span><br /> -->
+            </td>
+        </tr>
+    </table>
+</div>
